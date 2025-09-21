@@ -1,0 +1,26 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Design.PreviewWith>
+        <Border Padding="20">
+            <!-- Add Controls for Previewer Here -->
+        </Border>
+    </Design.PreviewWith>
+
+    <!-- focus đổi màu -->
+    <Style Selector="TextBox:focus-within /template/ Border">
+        <Setter Property="Background" Value="{DynamicResource TransparentBrush}" />
+        <!-- <Setter Property="BorderBrush" Value="{DynamicResource TransparentBrush}" /> -->
+        <!-- <Setter Property="BorderThickness" Value="0"></Setter> -->
+    </Style>
+
+    <!-- hover trỏ chuột đổi màu -->
+    <Style Selector="TextBox:pointerover /template/ Border">
+        <Setter Property="Background" Value="{DynamicResource TransparentBrush}" />
+        <!-- <Setter Property="BorderBrush" Value="{DynamicResource TransparentBrush}" /> -->
+        <Setter Property="BorderThickness" Value="0"></Setter>
+    </Style>
+    
+    <Style Selector="TextBox">
+        
+    </Style>
+</Styles>

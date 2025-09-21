@@ -1,6 +1,21 @@
-﻿namespace PC0483SecretCode.ViewModels;
+﻿using PC0483SecretCode.Services;
+using Splat;
 
-public class MainWindowViewModel : ViewModelBase
+namespace PC0483SecretCode.ViewModels
 {
-    public string Greeting { get; } = "Welcome to Avalonia!";
+    public class MainWindowViewModel : ViewModelBase
+    {
+        public NavigationService NavigationService { get; set; }
+
+        public MainWindowViewModel(NavigationService? navigationService = null)
+        { 
+            this.NavigationService = navigationService ?? Locator.Current.GetService<NavigationService>()!;
+        }
+        
+        public override void Dispose()
+        {
+            // các lệnh giải phóng tài nguyên
+            base.Dispose();
+        }
+    }
 }

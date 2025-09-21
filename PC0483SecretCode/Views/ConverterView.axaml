@@ -2,7 +2,35 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:PC0483SecretCode.ViewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:DataType="vm:ConverterViewModel"
              x:Class="PC0483SecretCode.Views.ConverterView">
-    <TextBlock Text="COnverter View"/>
+    
+    <Design.DataContext>
+        <vm:ConverterViewModel/>
+    </Design.DataContext>
+    
+    <Grid RowDefinitions="50, *">
+        <StackPanel Grid.Row="0">
+            <Button Foreground="Black" Content="Click" />
+        </StackPanel>
+        
+        <Grid Grid.Row="1" ColumnDefinitions="*,*">
+            <TextBox Grid.Column="0" Text="Hello" 
+                     Foreground="Black" 
+                     Background="White"
+                     CaretBrush="Black"
+                     AcceptsReturn="True"
+                     TextWrapping="Wrap"
+                     Watermark="Nhập văn bản tại đây..." />
+            <TextBox Grid.Column="1" Text="Hello"
+                     Foreground="Black" 
+                     Background="White"
+                     CaretBrush="Black"
+                     AcceptsReturn="True"
+                     TextWrapping="Wrap"
+                     Watermark="Nhập văn bản tại đây..." />
+        </Grid>
+    </Grid>
 </UserControl>
