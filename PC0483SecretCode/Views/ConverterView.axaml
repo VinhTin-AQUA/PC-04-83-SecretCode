@@ -12,25 +12,40 @@
     </Design.DataContext>
     
     <Grid RowDefinitions="50, *">
-        <StackPanel Grid.Row="0">
-            <Button Foreground="Black" Content="Click" />
+        <StackPanel Grid.Row="0" 
+                    Orientation="Horizontal">
+            <Button Background="{StaticResource primary}" 
+                    Foreground="White"
+                    Content="Click" 
+                    Command="{Binding ConvertCommand}" />
+            
+            <ToggleButton Background="{StaticResource primary}" 
+                          Foreground="White"
+                          Content="{Binding ConvertToCode, Converter={StaticResource BoolToTextConverter}}"
+                          Width="120"
+                          IsChecked="{Binding ConvertToCode, Mode=TwoWay}" />
         </StackPanel>
         
-        <Grid Grid.Row="1" ColumnDefinitions="*,*">
-            <TextBox Grid.Column="0" Text="Hello" 
+        <Grid Grid.Row="1" ColumnDefinitions="*,*" >
+            <TextBox Grid.Column="0" 
                      Foreground="Black" 
                      Background="White"
                      CaretBrush="Black"
                      AcceptsReturn="True"
                      TextWrapping="Wrap"
-                     Watermark="Nhập văn bản tại đây..." />
-            <TextBox Grid.Column="1" Text="Hello"
+                     Watermark="Nhập văn bản tại đây..." 
+                     Margin="5" 
+                     Text="{Binding Input1}" />
+            
+            <TextBox Grid.Column="1" 
                      Foreground="Black" 
                      Background="White"
                      CaretBrush="Black"
                      AcceptsReturn="True"
                      TextWrapping="Wrap"
-                     Watermark="Nhập văn bản tại đây..." />
+                     Watermark="Nhập văn bản tại đây..."
+                     Margin="5"
+                     Text="{Binding Input2}" />
         </Grid>
     </Grid>
 </UserControl>

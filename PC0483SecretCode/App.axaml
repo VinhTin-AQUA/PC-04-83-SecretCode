@@ -2,6 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="PC0483SecretCode.App"
              xmlns:local="using:PC0483SecretCode"
+             xmlns:converter="using:PC0483SecretCode.Converters"
              RequestedThemeVariant="Default">
     <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
 
@@ -13,6 +14,8 @@
         <FluentTheme />
         <StyleInclude Source="avares://PC0483SecretCode/Styles/ButtonSidebarStyles.axaml"/>
         <StyleInclude Source="avares://PC0483SecretCode/Styles/TextInput.axaml"/>
+        <StyleInclude Source="avares://PC0483SecretCode/Styles/ButtonStyles.axaml"/>
+        <StyleInclude Source="avares://PC0483SecretCode/Styles/ToggleButtonStyles.axaml"/>
     </Application.Styles>
 
     <Application.Resources>
@@ -20,6 +23,11 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceInclude Source="avares://PC0483SecretCode/Styles/Themes.axaml" />
             </ResourceDictionary.MergedDictionaries>
+            
         </ResourceDictionary>
+        
+        <converter:BoolToTextConverter x:Key="BoolToTextConverter"/>
     </Application.Resources>
+    
+    
 </Application>

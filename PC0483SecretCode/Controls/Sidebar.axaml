@@ -39,7 +39,7 @@
                                FontWeight="DemiBold" />
                     
                     <Button Grid.Column="1" Click="Toggle_Sidebar_OnClick">
-                        <Svg Path="{StaticResource convert}" Css=".fill { fill: #ef3535; } " Width="24" Height="24" />
+                        <Svg Path="{StaticResource menu}" Css=".fill { fill: #0f172a; } " Width="24" Height="24" />
                         
                         <Button.Styles>
                             <Style Selector="Button">
@@ -85,7 +85,7 @@
                         <DataTemplate>
                             <Button Classes="button-sidebar" Margin="0,0,0,10" >
                                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Spacing="8">
-                                    <Svg Path="{Binding Icon}" Css=".fill { fill: #ef3535; } " Width="24" Height="24"/>
+                                    <Svg Path="{Binding Icon}" Css=".fill { fill: #0f172a; } " Width="24" Height="24"/>
                                     <TextBlock Text="{Binding Name}" FontWeight="SemiBold" Foreground="{StaticResource primary}" VerticalAlignment="Center"/>
                                 </StackPanel>
                             </Button>
