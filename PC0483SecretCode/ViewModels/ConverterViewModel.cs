@@ -57,7 +57,7 @@ namespace PC0483SecretCode.ViewModels
             List<string> result = [];
             foreach (var code in codes)
             {
-                var keys = TextHelper.SpecialChars.Where(pair => pair.Value == code)
+                var keys = TextHelper.SpecialChars.Where(pair => pair.Value.Any(x => x.Equals(code, StringComparison.OrdinalIgnoreCase)))
                                .Select(pair => pair.Key)
                                .ToList();
 
@@ -96,7 +96,7 @@ namespace PC0483SecretCode.ViewModels
 
                 if (specialChar && specialCode != null)
                 {
-                    codes.Add(specialCode);
+                    codes.AddRange(specialCode);
                     continue;
                 }
 

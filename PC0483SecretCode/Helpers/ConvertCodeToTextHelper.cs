@@ -17,24 +17,6 @@ namespace PC0483SecretCode.Helpers
             string vowelCode = $"{code[2]}{code[3]}";
             string toneMarkCode = $"{code[4]}";
 
-            //bool checkConsonant = TextHelper.ConsonantCodes.TryGetValue(consonantCode, out var consonant);
-
-            //bool checkVowel = TextHelper.VowelCodes.TryGetValue(vowelCode, out var vowels);
-
-            //bool checkToneMark = TextHelper.ToneMarksAndPunctuations.TryGetValue(toneMarkCode, out var toneMark);
-
-            //if (!checkConsonant || !checkVowel || !checkToneMark)
-            //{
-            //    return [$"ERROR_CODE({code})"];
-            //}
-
-            //List<string> texts = [];
-            //foreach (var vowel in vowels!)
-            //{
-            //    texts.Add($"{consonant![0]}{vowel}{toneMark}");
-            //}
-            //return texts;
-
             var consonants = TextHelper.ConsonantCodes
                           .Where(pair => pair.Key.Equals(consonantCode, StringComparison.OrdinalIgnoreCase))
                           .SelectMany(pair => pair.Value)
