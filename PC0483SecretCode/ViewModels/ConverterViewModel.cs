@@ -1,7 +1,12 @@
-using System;
-using System.Reactive;
+using DynamicData;
 using PC0483SecretCode.Helpers;
 using ReactiveUI;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reactive;
+using System.Text.RegularExpressions;
+using Tmds.DBus.Protocol;
 
 namespace PC0483SecretCode.ViewModels
 {
@@ -34,27 +39,34 @@ namespace PC0483SecretCode.ViewModels
         {
             ConvertCommand = ReactiveCommand.Create(() =>
             {
+                string[] normalizedContent = NomalizeContent(Input1);
+
                 if (ConvertToCode)
                 {
-                    // convert code to text
-                    var result = ConvertTextToCode(Input1);
-                    Input2 = result;
+                    Input2 = ConvertTextToCode(normalizedContent);
                 }
                 else
                 {
-                    var result = ConvertCodeToText(Input1);
-                    Input2 = result;
+                    Input2 = ConvertCodeToText(normalizedContent);
                 }
             });
         }
         
-        public static string ConvertCodeToText(string content)
+        public static string ConvertCodeToText(string[] codes)
         {
-            var codes = content.Split(" ");
-            string decodedContent = string.Empty;
-            
+            List<string> result = [];
             foreach (var code in codes)
             {
+                var keys = TextHelper.SpecialChars.Where(pair => pair.Value == code)
+                               .Select(pair => pair.Key)
+                               .ToList();
+
+                if(keys != null && keys.Count > 0)
+                {
+                    result.AddRange(keys);
+                    continue;
+                }
+                     
                 var texts = ConvertCodeToTextHelper.ConvertToText(code);
 
                 for (int i = 0; i < texts.Count; i++)
@@ -62,29 +74,43 @@ namespace PC0483SecretCode.ViewModels
                     var tone = VietNameseNormalizeHelper.AddTone(texts[i]);
                     texts[i]  = VietNameseNormalizeHelper.NormalizeVietnameseAccent(tone);
                 }
-                
-                if (texts.Count == 1)
+
+                if (texts.Count > 1)
                 {
-                    decodedContent += texts[0] + " ";
+                    result.Add($"({string.Join(" ", texts)})");
                 }
                 else
                 {
-                    decodedContent += $"({string.Join(",", texts)}) ";
+                    result.Add(texts[0]);
                 }
             }
-            return decodedContent;
+            return string.Join(" ", result);
         }
 
-        public static string ConvertTextToCode(string content)
+        public static string ConvertTextToCode(string[] texts)
         {
-            var texts = content.Split(" ");
-            string codes = "";
+            List<string> codes = [];
             foreach (var text in texts)
             {
-                var code = ConvertTextToCodeHelper.SeparateVietnameseWord(text);
-                codes += code + " ";
+                var specialChar = TextHelper.SpecialChars.TryGetValue(text, out var specialCode);
+
+                if (specialChar && specialCode != null)
+                {
+                    codes.Add(specialCode);
+                    continue;
+                }
+
+                try
+                {
+                    var code = ConvertTextToCodeHelper.SeparateVietnameseWord(text);
+                    codes.Add(code);
+                }
+                catch 
+                {
+                    codes.Add($"ERROR_TEXT({text})");
+                }
             }
-            return codes;
+            return string.Join(" ", codes);
         }
         
         public override void Dispose()
@@ -92,5 +118,17 @@ namespace PC0483SecretCode.ViewModels
             // các lệnh giải phóng tài nguyên
             base.Dispose();
         }
+
+        #region private method
+
+        private static string[] NomalizeContent(string content)
+        {
+            char[] separators = { ' ', ',', '.', ';', ':', '!', '?', '\n', '\r', '\t' };
+            string[] words = content.Split(separators, StringSplitOptions.RemoveEmptyEntries);
+            string[] result = words.Select(x => x.ToLower()).ToArray();
+            return result;
+        }
+
+        #endregion
     }
 }

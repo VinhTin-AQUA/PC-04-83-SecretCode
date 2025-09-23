@@ -1,4 +1,7 @@
+using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Text;
 
 namespace PC0483SecretCode.Helpers
@@ -13,7 +16,6 @@ namespace PC0483SecretCode.Helpers
             foreach (var c in word)
             {
                 var normalized = c.ToString().Normalize(NormalizationForm.FormD);
-
                 var baseChar = '\0';
                 var combining = new StringBuilder();
 
@@ -48,36 +50,40 @@ namespace PC0483SecretCode.Helpers
             }
 
             var (consonant, vowel) = SeperateVowelAndConsonant(temp.ToString());
-            
-            string result = "";
-            
-            foreach (var kvp in TextConstants.ConsonantCodes)
+
+            var consonants = TextHelper.ConsonantCodes
+                           .Where(pair => pair.Value.Any(x => x.Equals(consonant, StringComparison.OrdinalIgnoreCase)))
+                           .Select(pair => pair.Key)
+                           .ToList();
+
+            var vowels = TextHelper.VowelCodes
+                            .Where(pair => pair.Value.Any(x => x.Equals(vowel, StringComparison.OrdinalIgnoreCase)))
+                            .Select(pair => pair.Key)
+                            .ToList();
+
+            var tones = TextHelper.ToneMarksAndPunctuations
+                            .Where(pair => pair.Value.Equals(tone, StringComparison.OrdinalIgnoreCase))
+                            .Select(pair => pair.Key)
+                            .ToList();
+
+            List<string> resuls = [];
+            foreach (var _consonant in consonants)
             {
-                if (kvp.Value.Contains(consonant)) // kiểm tra danh sách có chứa string t
+                foreach (var _vowel in vowels)
                 {
-                    result += kvp.Key;
-                    break;
+                    foreach (var _tone in tones)
+                    {
+                        resuls.Add($"{_consonant}{_vowel}{_tone}");
+                    }
                 }
             }
             
-            foreach (var kvp in TextConstants.VowelCodes)
+            if (resuls.Count > 1)
             {
-                if (kvp.Value.Contains(vowel)) // kiểm tra danh sách có chứa string t
-                {
-                    result += kvp.Key;
-                    break;
-                }
+                var t = string.Join(" ", resuls);
+                return $"({t})";
             }
-            
-            foreach (var kvp in TextConstants.ToneMarksAndPunctuations)
-            {
-                if (kvp.Value == tone) // so sánh chuỗi trực tiếp
-                {
-                    result += kvp.Key;
-                    break;
-                }
-            }
-            return result;
+            return resuls[0];
         }
 
         private static string ComposeWithCircumflex(char c)
